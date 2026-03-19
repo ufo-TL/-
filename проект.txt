@@ -1,0 +1,960 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🌿 Гигиена & Здоровье</title>
+    <style>
+        :root {
+            --primary: #2ecc71;
+            --primary-dark: #27ae60;
+            --secondary: #3498db;
+            --accent: #e74c3c;
+            --warning: #f39c12;
+            --purple: #764ba2;
+            --bg: #f0f7f4;
+            --card-bg: #ffffff;
+            --text: #2c3e50;
+            --text-light: #7f8c8d;
+            --border: #e8f5e9;
+            --shadow: 0 8px 32px rgba(0,0,0,0.1);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            min-height: 100vh;
+        }
+
+        /* ===== HEADER ===== */
+        header {
+            background: linear-gradient(135deg, #2ecc71 0%, #1abc9c 100%);
+            padding: 28px 20px 24px;
+            text-align: center;
+            color: white;
+            box-shadow: 0 4px 20px rgba(46,204,113,0.4);
+            position: relative;
+            overflow: hidden;
+        }
+
+        header::before {
+            content: '';
+            position: absolute;
+            top: -40px; right: -40px;
+            width: 150px; height: 150px;
+            background: rgba(255,255,255,0.08);
+            border-radius: 50%;
+        }
+
+        header::after {
+            content: '';
+            position: absolute;
+            bottom: -30px; left: -20px;
+            width: 100px; height: 100px;
+            background: rgba(255,255,255,0.06);
+            border-radius: 50%;
+        }
+
+        header h1 { font-size: 2.2rem; font-weight: 800; letter-spacing: -0.5px; }
+        header p  { font-size: 1rem; opacity: 0.9; margin-top: 6px; }
+
+        .date-bar {
+            background: white;
+            text-align: center;
+            padding: 12px 20px;
+            font-size: 0.95rem;
+            color: var(--text-light);
+            border-bottom: 1px solid #e8ecef;
+            font-weight: 500;
+        }
+
+        /* ===== CONTAINER ===== */
+        .container {
+            max-width: 820px;
+            margin: 0 auto;
+            padding: 24px 16px 40px;
+        }
+
+        /* ===== STREAK CARD ===== */
+        .streak-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 24px;
+            padding: 28px 20px 20px;
+            text-align: center;
+            color: white;
+            margin-bottom: 22px;
+            box-shadow: 0 10px 40px rgba(118,75,162,0.35);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .streak-card::before {
+            content: '';
+            position: absolute;
+            top: -50px; right: -30px;
+            width: 160px; height: 160px;
+            background: rgba(255,255,255,0.07);
+            border-radius: 50%;
+        }
+
+        .streak-emoji  { font-size: 3.5rem; display: block; margin-bottom: 4px; }
+        .streak-number {
+            font-size: 5rem;
+            font-weight: 900;
+            line-height: 1;
+            text-shadow: 0 4px 15px rgba(0,0,0,0.2);
+        }
+        .streak-label  { font-size: 1.1rem; opacity: 0.9; margin-top: 6px; font-weight: 600; }
+        .streak-best   { font-size: 0.88rem; opacity: 0.75; margin-top: 10px; }
+
+        .streak-calendar {
+            display: flex;
+            gap: 5px;
+            flex-wrap: wrap;
+            margin-top: 18px;
+            justify-content: center;
+        }
+
+        .cal-day {
+            width: 34px; height: 34px;
+            border-radius: 9px;
+            background: rgba(255,255,255,0.15);
+            display: flex; align-items: center; justify-content: center;
+            font-size: 0.75rem; color: rgba(255,255,255,0.65); font-weight: 600;
+            transition: all 0.3s;
+        }
+
+        .cal-day.done {
+            background: rgba(255,255,255,0.92);
+            color: #764ba2;
+        }
+
+        .cal-day.today-mark {
+            border: 2px solid rgba(255,255,255,0.9);
+            color: white;
+        }
+
+        .cal-label {
+            font-size: 0.8rem;
+            opacity: 0.7;
+            margin-top: 8px;
+            letter-spacing: 0.5px;
+        }
+
+        /* ===== CARD ===== */
+        .card {
+            background: var(--card-bg);
+            border-radius: 22px;
+            padding: 26px;
+            margin-bottom: 20px;
+            box-shadow: var(--shadow);
+            border: 1px solid var(--border);
+        }
+
+        .card-title {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--text);
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        /* ===== PROGRESS ===== */
+        .progress-section { margin-bottom: 20px; }
+
+        .progress-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 8px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: var(--text-light);
+        }
+
+        .progress-bar {
+            height: 13px;
+            background: #ecf0f1;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--primary), var(--primary-dark));
+            border-radius: 10px;
+            transition: width 0.5s cubic-bezier(0.4,0,0.2,1);
+            width: 0%;
+        }
+
+        /* ===== CHECKLIST ITEMS ===== */
+        .checklist-item {
+            display: flex;
+            align-items: center;
+            padding: 14px 16px;
+            border-radius: 14px;
+            margin-bottom: 10px;
+            background: #f8fffe;
+            border: 2px solid #e8f5e9;
+            transition: all 0.25s ease;
+            cursor: pointer;
+            user-select: none;
+        }
+
+        .checklist-item:hover {
+            border-color: var(--primary);
+            background: #f0fff8;
+            transform: translateX(4px);
+        }
+
+        .checklist-item.checked {
+            background: #d5f5e3;
+            border-color: var(--primary);
+        }
+
+        .checklist-item.checked .item-text {
+            text-decoration: line-through;
+            color: var(--text-light);
+        }
+
+        .checkbox-box {
+            width: 28px; height: 28px;
+            border-radius: 9px;
+            border: 2.5px solid #bdc3c7;
+            margin-right: 14px;
+            display: flex; align-items: center; justify-content: center;
+            flex-shrink: 0;
+            transition: all 0.25s ease;
+            font-size: 15px; font-weight: 700;
+            color: white;
+        }
+
+        .checklist-item.checked .checkbox-box {
+            background: var(--primary);
+            border-color: var(--primary);
+        }
+
+        .item-icon { font-size: 1.5rem; margin-right: 13px; flex-shrink: 0; }
+
+        .item-text { font-size: 1rem; font-weight: 500; flex: 1; }
+
+        .item-time {
+            font-size: 0.78rem;
+            color: var(--text-light);
+            background: #f0f3f4;
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-weight: 500;
+            flex-shrink: 0;
+        }
+
+        /* ===== ALL DONE BANNER ===== */
+        .all-done-banner {
+            display: none;
+            text-align: center;
+            padding: 16px;
+            background: linear-gradient(135deg, #2ecc71, #1abc9c);
+            border-radius: 14px;
+            color: white;
+            font-weight: 700;
+            font-size: 1.1rem;
+            margin: 14px 0;
+            animation: popIn 0.4s ease;
+        }
+
+        .all-done-banner.show { display: block; }
+
+        .done-today-msg {
+            text-align: center;
+            padding: 18px 20px;
+            background: linear-gradient(135deg, #d5f5e3, #a9dfbf);
+            border-radius: 14px;
+            margin-top: 14px;
+        }
+
+        .done-today-msg h3 { color: #1e8449; font-size: 1.2rem; margin-bottom: 5px; }
+        .done-today-msg p  { color: #239b56; font-size: 0.95rem; }
+
+        /* ===== CONSEQUENCES ===== */
+        .consequences {
+            background: #fff5f5;
+            border: 2px solid #ffd5d5;
+            border-radius: 16px;
+            padding: 22px;
+        }
+
+        .consequences-title {
+            color: #c0392b;
+            font-weight: 800;
+            font-size: 1.1rem;
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .con-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+            margin-bottom: 11px;
+            font-size: 0.94rem;
+            color: #922b21;
+            line-height: 1.5;
+        }
+
+        .con-dot {
+            width: 8px; height: 8px;
+            background: #e74c3c;
+            border-radius: 50%;
+            margin-top: 7px;
+            flex-shrink: 0;
+        }
+
+        /* ===== BUTTONS ===== */
+        .btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 9px;
+            padding: 15px 24px;
+            border-radius: 14px;
+            border: none;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: 700;
+            transition: all 0.25s ease;
+            width: 100%;
+            margin-top: 12px;
+            letter-spacing: 0.2px;
+        }
+
+        .btn:hover { transform: translateY(-3px); box-shadow: 0 8px 24px rgba(0,0,0,0.15); }
+        .btn:active { transform: translateY(0); }
+
+        .btn-complete {
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: white;
+        }
+
+        .btn-complete:disabled {
+            opacity: 0.65; cursor: not-allowed;
+            transform: none !important; box-shadow: none !important;
+        }
+
+        .btn-how  { background: linear-gradient(135deg, #3498db, #2980b9); color: white; }
+        .btn-tips { background: linear-gradient(135deg, #f39c12, #e67e22); color: white; }
+        .btn-close {
+            background: #ecf0f1; color: var(--text);
+            width: auto; padding: 11px 22px; margin-top: 20px;
+            font-size: 0.95rem;
+        }
+        .btn-close:hover { background: #dfe6e9; transform: none; box-shadow: none; }
+
+        /* ===== MODAL ===== */
+        .modal-overlay {
+            display: none;
+            position: fixed; top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: rgba(0,0,0,0.55);
+            z-index: 1000;
+            backdrop-filter: blur(6px);
+            overflow-y: auto;
+            padding: 24px 16px;
+            align-items: flex-start;
+            justify-content: center;
+        }
+
+        .modal-overlay.active { display: flex; }
+
+        .modal {
+            background: white;
+            border-radius: 24px;
+            padding: 32px 28px;
+            max-width: 620px;
+            width: 100%;
+            margin: auto;
+            box-shadow: 0 24px 80px rgba(0,0,0,0.25);
+            animation: popIn 0.35s cubic-bezier(0.34,1.56,0.64,1);
+        }
+
+        @keyframes popIn {
+            from { transform: scale(0.85) translateY(-20px); opacity: 0; }
+            to   { transform: scale(1) translateY(0);        opacity: 1; }
+        }
+
+        .modal-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 22px;
+            padding-bottom: 16px;
+            border-bottom: 2px solid var(--border);
+        }
+
+        .modal-title { font-size: 1.35rem; font-weight: 800; color: var(--text); }
+
+        .modal-close-x {
+            width: 36px; height: 36px;
+            border-radius: 50%; border: none;
+            background: #f0f3f4; cursor: pointer;
+            font-size: 1.1rem; font-weight: 700;
+            display: flex; align-items: center; justify-content: center;
+            transition: background 0.2s;
+        }
+
+        .modal-close-x:hover { background: #dfe6e9; }
+
+        /* HOW-TO items */
+        .how-item {
+            margin-bottom: 16px;
+            padding: 16px 18px;
+            background: #f8fffe;
+            border-radius: 14px;
+            border-left: 5px solid var(--primary);
+        }
+
+        .how-item h3 {
+            font-size: 1rem; font-weight: 700;
+            color: var(--primary-dark);
+            margin-bottom: 8px;
+            display: flex; align-items: center; gap: 8px;
+        }
+
+        .how-item ul, .how-item p {
+            font-size: 0.9rem; color: #5d6d7e; line-height: 1.65;
+        }
+
+        .how-item ul { padding-left: 18px; }
+        .how-item ul li { margin-bottom: 4px; }
+
+        /* TIP items */
+        .tip-item {
+            margin-bottom: 16px;
+            padding: 16px 18px;
+            background: #fffbf0;
+            border-radius: 14px;
+            border-left: 5px solid var(--warning);
+        }
+
+        .tip-item h3 {
+            font-size: 1rem; font-weight: 700;
+            color: #c67c00; margin-bottom: 8px;
+        }
+
+        .tip-item p {
+            font-size: 0.9rem; color: #6e5a2e; line-height: 1.65;
+        }
+
+        /* ===== BOUNCE ANIMATION ===== */
+        @keyframes bounce {
+            0%,100% { transform: scale(1); }
+            30%      { transform: scale(1.12); }
+            60%      { transform: scale(0.95); }
+        }
+
+        .bounce-anim { animation: bounce 0.6s ease; }
+
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 600px) {
+            header h1 { font-size: 1.6rem; }
+            .streak-number { font-size: 4rem; }
+            .modal { padding: 22px 16px; }
+            .card { padding: 18px; }
+            .cal-day { width: 28px; height: 28px; font-size: 0.7rem; }
+        }
+    </style>
+</head>
+<body>
+
+<!-- ===== HEADER ===== -->
+<header>
+    <h1>🌿 Гигиена &amp; Здоровье</h1>
+    <p>Твой ежедневный помощник по уходу за собой</p>
+</header>
+<div class="date-bar" id="currentDate"></div>
+
+<!-- ===== MAIN ===== -->
+<div class="container">
+
+    <!-- STREAK CARD -->
+    <div class="streak-card" id="streakCard">
+        <span class="streak-emoji" id="streakEmoji">💤</span>
+        <div class="streak-number" id="streakNumber">0</div>
+        <div class="streak-label">дней подряд</div>
+        <div class="streak-best" id="bestLabel">🏆 Лучшая серия: 0 дней</div>
+        <div class="streak-calendar" id="calGrid"></div>
+        <div class="cal-label">Последние 14 дней</div>
+    </div>
+
+    <!-- CHECKLIST CARD -->
+    <div class="card">
+        <div class="card-title">📋 Совет дня — Чек-лист гигиены</div>
+
+        <div class="progress-section">
+            <div class="progress-header">
+                <span>Прогресс</span>
+                <span id="progressText">0 / 8</span>
+            </div>
+            <div class="progress-bar">
+                <div class="progress-fill" id="progressFill"></div>
+            </div>
+        </div>
+
+        <div id="checklistWrap"></div>
+
+        <div class="all-done-banner" id="allDoneBanner">🎉 Все задания выполнены! Нажми кнопку ниже!</div>
+
+        <div id="todayDoneWrap"></div>
+
+        <button class="btn btn-complete" id="completeBtn" onclick="completeToday()">
+            ✅ Отметить день как выполненный
+        </button>
+    </div>
+
+    <!-- CONSEQUENCES CARD -->
+    <div class="card">
+        <div class="consequences">
+            <div class="consequences-title">⚠️ Последствия невыполнения чек-листа</div>
+            <div class="con-item"><div class="con-dot"></div>Неприятный запах изо рта и тела — социальное отстранение окружающих</div>
+            <div class="con-item"><div class="con-dot"></div>Размножение бактерий → кариес, воспаление дёсен, прыщи и кожные инфекции</div>
+            <div class="con-item"><div class="con-dot"></div>Ослабление иммунитета из-за накопления болезнетворных микроорганизмов</div>
+            <div class="con-item"><div class="con-dot"></div>Психологический дискомфорт и снижение уверенности в себе</div>
+            <div class="con-item"><div class="con-dot"></div>Риск кишечных инфекций, гриппа и ОРВИ при игнорировании мытья рук</div>
+            <div class="con-item"><div class="con-dot"></div>Ухудшение состояния кожи, волос и ногтей при систематическом пренебрежении</div>
+            <div class="con-item"><div class="con-dot"></div>Грибковые заболевания стоп и ногтей при редкой смене носков</div>
+        </div>
+    </div>
+
+    <!-- ACTION BUTTONS -->
+    <button class="btn btn-how" onclick="openModal('howModal')">
+        📖 Как правильно выполнять чек-лист?
+    </button>
+
+    <button class="btn btn-tips" onclick="openModal('tipsModal')">
+        💡 Советы о здоровом образе жизни
+    </button>
+
+</div>
+
+<!-- ===== HOW-TO MODAL ===== -->
+<div class="modal-overlay" id="howModal" onclick="outsideClose(event,'howModal')">
+    <div class="modal">
+        <div class="modal-header">
+            <div class="modal-title">📖 Как правильно выполнять чек-лист</div>
+            <button class="modal-close-x" onclick="closeModal('howModal')">✕</button>
+        </div>
+
+        <div class="how-item">
+            <h3>🦷 Чистка зубов</h3>
+            <ul>
+                <li>Минимум <strong>2 минуты</strong>, утром и перед сном</li>
+                <li>Движения — круговые и вертикальные (не горизонтальные!)</li>
+                <li>Чисти язык и внутренние поверхности зубов</li>
+                <li>Используй зубную нить или ирригатор раз в день</li>
+                <li>Меняй зубную щётку каждые 3 месяца</li>
+            </ul>
+        </div>
+
+        <div class="how-item">
+            <h3>💧 Умывание лица</h3>
+            <ul>
+                <li>Умывайся <strong>тёплой</strong> водой (не горячей и не холодной)</li>
+                <li>Используй мягкое средство для твоего типа кожи</li>
+                <li>Промокни лицо чистым полотенцем — не три!</li>
+                <li>Нанеси увлажняющий крем пока кожа чуть влажная</li>
+            </ul>
+        </div>
+
+        <div class="how-item">
+            <h3>🚿 Душ</h3>
+            <ul>
+                <li>Оптимальная температура: <strong>37–38°C</strong></li>
+                <li>Особое внимание: подмышки, шея, пах, стопы между пальцами</li>
+                <li>Скраб / мочалка 2–3 раза в неделю (не чаще — навредишь коже)</li>
+                <li>После душа нанеси увлажняющий лосьон</li>
+            </ul>
+        </div>
+
+        <div class="how-item">
+            <h3>✋ Мытьё рук</h3>
+            <ul>
+                <li>Мой с мылом не менее <strong>20 секунд</strong></li>
+                <li>Намыливай между пальцами, тыльную сторону и под ногтями</li>
+                <li>Обязательно: после улицы, перед едой, после туалета</li>
+                <li>Тщательно ополаскивай и вытирай насухо</li>
+            </ul>
+        </div>
+
+        <div class="how-item">
+            <h3>💆 Расчёсывание волос</h3>
+            <ul>
+                <li>Начинай с кончиков, постепенно поднимаясь к корням</li>
+                <li>Для мокрых волос — широкий гребень, не щётка</li>
+                <li>Мой голову по мере загрязнения (1–3 раза в неделю)</li>
+            </ul>
+        </div>
+
+        <div class="how-item">
+            <h3>🌬️ Дезодорант</h3>
+            <ul>
+                <li>Наноси на <strong>чистую и сухую</strong> кожу после душа</li>
+                <li>Антиперспирант лучше наносить <strong>вечером</strong> — он работает ночью</li>
+                <li>Не наноси на раздражённую или повреждённую кожу</li>
+            </ul>
+        </div>
+
+        <div class="how-item">
+            <h3>👕 Смена нижнего белья и носков</h3>
+            <p>Меняй каждый день — без исключений. Влажная среда в нижнем белье — идеальная почва для бактерий и грибков. Постирал = здоров.</p>
+        </div>
+
+        <div class="how-item">
+            <h3>💅 Очистка под ногтями</h3>
+            <ul>
+                <li>Чисти под ногтями при каждом мытье рук щёточкой или ногтечисткой</li>
+                <li>Стриги ногти раз в 1–2 недели</li>
+                <li>Подпиливай заусенцы — не отрывай руками!</li>
+            </ul>
+        </div>
+
+        <div style="text-align:right">
+            <button class="btn btn-close" onclick="closeModal('howModal')">✕ Закрыть</button>
+        </div>
+    </div>
+</div>
+
+<!-- ===== TIPS MODAL ===== -->
+<div class="modal-overlay" id="tipsModal" onclick="outsideClose(event,'tipsModal')">
+    <div class="modal">
+        <div class="modal-header">
+            <div class="modal-title">💡 Советы о здоровом образе жизни</div>
+            <button class="modal-close-x" onclick="closeModal('tipsModal')">✕</button>
+        </div>
+
+        <div class="tip-item">
+            <h3>💧 Пей достаточно воды</h3>
+            <p>1.5–2.5 литра чистой воды в день (зависит от веса и активности). Начинай утро со стакана воды натощак. Вода — основа обмена веществ, красоты кожи и энергии.</p>
+        </div>
+
+        <div class="tip-item">
+            <h3>🏃 Двигайся каждый день</h3>
+            <p>30 минут умеренной активности снижают риск сердечных заболеваний на 35%. Это может быть прогулка, зарядка или танцы — главное регулярность, а не интенсивность.</p>
+        </div>
+
+        <div class="tip-item">
+            <h3>😴 Соблюдай режим сна</h3>
+            <p>Взрослому нужно 7–9 часов сна. Ложись и вставай в одно время каждый день, даже в выходные. Хороший сон = сильный иммунитет + хорошая концентрация.</p>
+        </div>
+
+        <div class="tip-item">
+            <h3>🥦 Питайся сбалансированно</h3>
+            <p>Больше овощей, фруктов, белка и цельнозерновых. Меньше сахара, соли и обработанных продуктов. Не пропускай завтрак — он запускает метаболизм на весь день.</p>
+        </div>
+
+        <div class="tip-item">
+            <h3>🧘 Управляй стрессом</h3>
+            <p>Хронический стресс буквально разрушает клетки. Практикуй медитацию, дыхательные упражнения или прогулки на природе. Даже 10 минут тишины в день — это результат.</p>
+        </div>
+
+        <div class="tip-item">
+            <h3>🚭 Откажись от вредных привычек</h3>
+            <p>Курение и злоупотребление алкоголем разрушают здоровье постепенно, но неизбежно. Замени вредные ритуалы на полезные: вечерняя прогулка вместо сигареты.</p>
+        </div>
+
+        <div class="tip-item">
+            <h3>👁️ Береги зрение</h3>
+            <p>Правило 20-20-20: каждые 20 минут смотри на предмет в 6 метрах от тебя в течение 20 секунд. Держи экраны на уровне глаз и обеспечь хорошее освещение рабочего места.</p>
+        </div>
+
+        <div class="tip-item">
+            <h3>🌞 Получай витамин D</h3>
+            <p>15–20 минут на солнце в день покрывают дневную норму. Витамин D необходим для иммунитета, костей и настроения. Зимой рассмотри добавки после консультации с врачом.</p>
+        </div>
+
+        <div class="tip-item">
+            <h3>🤝 Поддерживай социальные связи</h3>
+            <p>Одиночество так же вредно для здоровья, как 15 сигарет в день. Общение с близкими, новые знакомства и участие в жизни сообщества буквально продлевают жизнь.</p>
+        </div>
+
+        <div class="tip-item">
+            <h3>🩺 Проходи профилактические осмотры</h3>
+            <p>Посещай врача и стоматолога хотя бы раз в год, даже если ничего не болит. Большинство серьёзных болезней лечатся легко при раннем обнаружении.</p>
+        </div>
+
+        <div style="text-align:right">
+            <button class="btn btn-close" onclick="closeModal('tipsModal')">✕ Закрыть</button>
+        </div>
+    </div>
+</div>
+
+<!-- ===== JAVASCRIPT ===== -->
+<script>
+
+    /* ── ДАННЫЕ ЧЕКЛИСТА ─────────────────────────── */
+    const ITEMS = [
+        { id: 'teeth',     icon: '🦷', text: 'Почистить зубы',                  time: 'Утро & Вечер' },
+        { id: 'face',      icon: '💧', text: 'Умыться',                          time: 'Утро & Вечер' },
+        { id: 'shower',    icon: '🚿', text: 'Принять душ',                      time: 'Ежедневно'    },
+        { id: 'hair',      icon: '💆', text: 'Расчесать волосы',                 time: 'Утром'        },
+        { id: 'hands',     icon: '✋', text: 'Вымыть руки перед едой',           time: 'Каждый раз'   },
+        { id: 'deodorant', icon: '🌬️', text: 'Использовать дезодорант',          time: 'После душа'   },
+        { id: 'clothes',   icon: '👕', text: 'Сменить нижнее бельё и носки',     time: 'Ежедневно'    },
+        { id: 'nails',     icon: '💅', text: 'Очистить под ногтями',             time: 'Ежедневно'    }
+    ];
+
+    /* ── СОСТОЯНИЕ ───────────────────────────────── */
+    let checked      = new Set();
+    let todayDone    = false;
+
+    /* ── УТИЛИТЫ ─────────────────────────────────── */
+    const todayStr = () => new Date().toISOString().split('T')[0];
+
+    const yesterdayStr = () => {
+        const d = new Date();
+        d.setDate(d.getDate() - 1);
+        return d.toISOString().split('T')[0];
+    };
+
+    const daysWord = n => {
+        const a = Math.abs(n);
+        if (a % 100 >= 11 && a % 100 <= 19) return 'дней';
+        if (a % 10 === 1)                    return 'день';
+        if (a % 10 >= 2 && a % 10 <= 4)     return 'дня';
+        return 'дней';
+    };
+
+    /* ── LS HELPERS ──────────────────────────────── */
+    const lsGet  = (k, def) => { try { return JSON.parse(localStorage.getItem(k)) ?? def; } catch { return def; } };
+    const lsSet  = (k, v)   => localStorage.setItem(k, JSON.stringify(v));
+
+    /* ── ИНИЦИАЛИЗАЦИЯ ───────────────────────────── */
+    function init() {
+        renderDate();
+        checkStreakBreak();
+        loadTodayState();
+        renderChecklist();
+        updateProgress();
+        updateStreakUI();
+        renderCalendar();
+    }
+
+    function renderDate() {
+        const opts = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+        document.getElementById('currentDate').textContent =
+            '📅 ' + new Date().toLocaleDateString('ru-RU', opts);
+    }
+
+    /* Проверяем: если пропущен хоть 1 день — сбрасываем серию */
+    function checkStreakBreak() {
+        const last = lsGet('hy_lastDate', '');
+        const today = todayStr();
+        const yest  = yesterdayStr();
+
+        if (last && last !== today && last !== yest) {
+            lsSet('hy_streak', 0);
+        }
+    }
+
+    function loadTodayState() {
+        const last = lsGet('hy_lastDate', '');
+        todayDone = (last === todayStr());
+
+        if (todayDone) {
+            checked = new Set(lsGet('hy_todayChecked', []));
+        }
+    }
+
+    /* ── РЕНДЕР ЧЕКЛИСТА ─────────────────────────── */
+    function renderChecklist() {
+        const wrap = document.getElementById('checklistWrap');
+        wrap.innerHTML = '';
+
+        ITEMS.forEach(item => {
+            const div = document.createElement('div');
+            div.className = 'checklist-item' + (checked.has(item.id) ? ' checked' : '');
+            div.id = 'ci-' + item.id;
+            div.setAttribute('role', 'checkbox');
+            div.setAttribute('aria-checked', checked.has(item.id));
+            div.onclick = () => toggleItem(item.id);
+
+            div.innerHTML = `
+                <div class="checkbox-box">${checked.has(item.id) ? '✓' : ''}</div>
+                <span class="item-icon">${item.icon}</span>
+                <span class="item-text">${item.text}</span>
+                <span class="item-time">${item.time}</span>
+            `;
+            wrap.appendChild(div);
+        });
+
+        if (todayDone) {
+            wrap.querySelectorAll('.checklist-item').forEach(el => el.style.cursor = 'default');
+            showDoneMsg();
+            const btn = document.getElementById('completeBtn');
+            btn.disabled = true;
+            btn.innerHTML = '✅ Сегодня уже выполнено!';
+        }
+    }
+
+    function toggleItem(id) {
+        if (todayDone) return;
+
+        checked.has(id) ? checked.delete(id) : checked.add(id);
+
+        const el = document.getElementById('ci-' + id);
+        const isNow = checked.has(id);
+        el.className = 'checklist-item' + (isNow ? ' checked' : '');
+        el.querySelector('.checkbox-box').textContent = isNow ? '✓' : '';
+        el.setAttribute('aria-checked', isNow);
+
+        lsSet('hy_todayChecked', [...checked]);
+        updateProgress();
+    }
+
+    function updateProgress() {
+        const done  = checked.size;
+        const total = ITEMS.length;
+        const pct   = Math.round((done / total) * 100);
+
+        document.getElementById('progressText').textContent = `${done} / ${total}`;
+        document.getElementById('progressFill').style.width = pct + '%';
+
+        const banner = document.getElementById('allDoneBanner');
+        if (done === total && !todayDone) {
+            banner.classList.add('show');
+        } else {
+            banner.classList.remove('show');
+        }
+    }
+
+    /* ── ЗАВЕРШЕНИЕ ДНЯ ──────────────────────────── */
+    function completeToday() {
+        if (todayDone) return;
+
+        // Помечаем всё как выполненное
+        ITEMS.forEach(i => checked.add(i.id));
+
+        const today = todayStr();
+        const yest  = yesterdayStr();
+        const last  = lsGet('hy_lastDate', '');
+        let streak  = lsGet('hy_streak', 0);
+        let best    = lsGet('hy_best', 0);
+
+        streak = (last === yest) ? streak + 1 : 1;
+
+        if (streak > best) { best = streak; lsSet('hy_best', best); }
+
+        lsSet('hy_streak',      streak);
+        lsSet('hy_lastDate',    today);
+        lsSet('hy_todayChecked', [...checked]);
+
+        // История
+        let hist = lsGet('hy_history', []);
+        if (!hist.includes(today)) {
+            hist.push(today);
+            if (hist.length > 30) hist = hist.slice(-30);
+            lsSet('hy_history', hist);
+        }
+
+        todayDone = true;
+
+        // Обновляем UI
+        document.querySelectorAll('.checklist-item').forEach(el => {
+            el.className = 'checklist-item checked';
+            el.querySelector('.checkbox-box').textContent = '✓';
+            el.style.cursor = 'default';
+        });
+
+        document.getElementById('allDoneBanner').classList.remove('show');
+        updateProgress();
+        updateStreakUI();
+        renderCalendar();
+        showDoneMsg();
+
+        const btn = document.getElementById('completeBtn');
+        btn.disabled = true;
+        btn.innerHTML = '✅ Сегодня уже выполнено!';
+
+        // Анимация карточки серии
+        const card = document.getElementById('streakCard');
+        card.classList.add('bounce-anim');
+        setTimeout(() => card.classList.remove('bounce-anim'), 700);
+    }
+
+    function showDoneMsg() {
+        const streak = lsGet('hy_streak', 0);
+        document.getElementById('todayDoneWrap').innerHTML = `
+            <div class="done-today-msg">
+                <h3>🎉 Отлично! Сегодня выполнено!</h3>
+                <p>Ты поддерживаешь серию уже <strong>${streak} ${daysWord(streak)}</strong> подряд!</p>
+            </div>
+        `;
+    }
+
+    /* ── СЕРИЯ ───────────────────────────────────── */
+    function updateStreakUI() {
+        const streak = lsGet('hy_streak', 0);
+        const best   = lsGet('hy_best',   0);
+
+        document.getElementById('streakNumber').textContent = streak;
+        document.getElementById('bestLabel').textContent    = `🏆 Лучшая серия: ${best} ${daysWord(best)}`;
+
+        const emojis = ['💤','🌱','🌱','🔥','🔥','🔥','🔥','⚡','⚡','⚡','⚡','⚡','⚡','⚡','🏆'];
+        const idx = Math.min(streak, emojis.length - 1);
+        document.getElementById('streakEmoji').textContent = emojis[idx];
+    }
+
+    function renderCalendar() {
+        const hist = lsGet('hy_history', []);
+        const today = todayStr();
+        const grid  = document.getElementById('calGrid');
+        grid.innerHTML = '';
+
+        for (let i = 13; i >= 0; i--) {
+            const d = new Date();
+            d.setDate(d.getDate() - i);
+            const ds = d.toISOString().split('T')[0];
+            const day = d.getDate();
+
+            const el = document.createElement('div');
+            el.className = 'cal-day';
+            if (hist.includes(ds))  el.classList.add('done');
+            if (ds === today)       el.classList.add('today-mark');
+            el.textContent = day;
+            el.title = ds;
+            grid.appendChild(el);
+        }
+    }
+
+    /* ── МОДАЛКИ ─────────────────────────────────── */
+    function openModal(id) {
+        document.getElementById(id).classList.add('active');
+        document.body.style.overflow = 'hidden';
+    }
+
+    function closeModal(id) {
+        document.getElementById(id).classList.remove('active');
+        document.body.style.overflow = '';
+    }
+
+    function outsideClose(e, id) {
+        if (e.target === document.getElementById(id)) closeModal(id);
+    }
+
+    document.addEventListener('keydown', e => {
+        if (e.key === 'Escape') {
+            closeModal('howModal');
+            closeModal('tipsModal');
+        }
+    });
+
+    /* ── СТАРТ ───────────────────────────────────── */
+    init();
+
+</script>
+</body>
+</html>
